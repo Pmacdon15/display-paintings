@@ -128,11 +128,13 @@ export function ARViewer({
           ) : (
             <ModelViewer
               src={modelUrl}
+              ar-placement='wall'
               poster=""
               alt="A 3D model of the painting"
               shadow-intensity="1"
               camera-controls
               auto-rotate
+              touchAction="pan-y"
               interaction-prompt="auto"
               ar
               ar-modes="webxr scene-viewer quick-look"

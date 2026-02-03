@@ -28,7 +28,7 @@ interface PaintingCardProps {
 }
 
 export function PaintingCard({ painting }: PaintingCardProps) {
-  const [viewMode, setViewMode] = useState<"2d" | "3d">("2d");
+  const [viewMode, setViewMode] = useState<"2d" | "3d">("3d");
   const [selectedFrameId, setSelectedFrameId] = useState<string>("f1");
   const [showAR, setShowAR] = useState(false);
 
@@ -72,7 +72,7 @@ export function PaintingCard({ painting }: PaintingCardProps) {
 
           {/* View Toggles */}
           <div className="absolute top-4 right-4 flex flex-col gap-2">
-            <Button
+            {/* <Button
               size="icon"
               variant={viewMode === "2d" ? "default" : "secondary"}
               onClick={() => setViewMode("2d")}
@@ -85,7 +85,7 @@ export function PaintingCard({ painting }: PaintingCardProps) {
               )}
             >
               <ImageIcon className="size-4" />
-            </Button>
+            </Button> */}
             <Button
               size="icon"
               variant={viewMode === "3d" ? "secondary" : "default"}
