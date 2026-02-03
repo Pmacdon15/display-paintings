@@ -79,21 +79,21 @@ export function ARViewer({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full h-full max-w-4xl max-h-[90vh] bg-black rounded-lg overflow-hidden flex flex-col">
-        <div className="flex justify-between items-center p-4 bg-neutral-900">
-          <h3 className="text-white font-medium">AR View</h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+      <div className="relative w-full h-full max-w-4xl max-h-[90vh] bg-white rounded-lg overflow-hidden flex flex-col shadow-2xl border border-neutral-200">
+        <div className="flex justify-between items-center p-4 bg-neutral-50 border-b border-neutral-200">
+          <h3 className="text-neutral-900 font-medium">AR View</h3>
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="text-white"
+            className="text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100"
           >
             <X className="size-6" />
           </Button>
         </div>
 
-        <div className="flex-1 relative bg-neutral-800 flex items-center justify-center">
+        <div className="flex-1 relative bg-neutral-100 flex items-center justify-center">
           {/* Hidden Canvas for Generation */}
           {!modelUrl && (
             <div className="absolute inset-0 z-0 opacity-0 pointer-events-none">
@@ -120,7 +120,7 @@ export function ARViewer({
 
           {/* Loading State or Viewer */}
           {!modelUrl ? (
-            <div className="flex flex-col items-center gap-4 text-white">
+            <div className="flex flex-col items-center gap-4 text-neutral-500">
               <Loader2 className="animate-spin size-8" />
               <p>Generating AR Model...</p>
             </div>
@@ -133,23 +133,27 @@ export function ARViewer({
               shadow-intensity="1"
               camera-controls
               auto-rotate
+              interaction-prompt="auto"
               ar
               className="w-full h-full"
-              style={{ width: "100%", height: "100%" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#f5f5f5",
+              }}
             >
               <div
                 slot="ar-button"
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-3 rounded-full font-bold shadow-lg"
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full font-bold shadow-lg cursor-pointer hover:scale-105 transition-transform"
               >
                 View in your space
               </div>
             </ModelViewer>
           )}
 
-          <div className="absolute top-4 left-4 p-4 bg-black/60 text-white rounded max-w-sm pointer-events-none z-10">
+          <div className="absolute top-4 left-4 p-4 bg-white/80 text-neutral-800 rounded max-w-sm pointer-events-none z-10 backdrop-blur shadow-sm border border-neutral-200">
             <p className="text-sm">
-              The 3D model is generated in real-time. Click "View in your space"
-              if on a supported mobile device.
+              Use touch gestures to rotate, pinch to zoom.
             </p>
           </div>
         </div>

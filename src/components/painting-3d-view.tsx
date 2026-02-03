@@ -15,7 +15,7 @@ import { PaintingScene } from "./painting-scene";
 
 export function Painting3DView(props: Painting3DProps) {
   return (
-    <div className="w-full h-full min-h-[400px] bg-neutral-900 rounded-lg overflow-hidden relative grayscale-0">
+    <div className="w-full h-full min-h-100 rounded-lg overflow-hidden relative grayscale-0">
       <Canvas shadows camera={{ position: [0, 0, 8], fov: 50 }}>
         <ambientLight intensity={0.8} />
         <spotLight
