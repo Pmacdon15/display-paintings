@@ -1,6 +1,5 @@
 "use client";
 
-import "@google/model-viewer";
 import { Canvas, useThree } from "@react-three/fiber";
 import { Loader2, X } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
@@ -128,7 +127,7 @@ export function ARViewer({
           ) : (
             <ModelViewer
               src={modelUrl}
-              ar-placement='wall'
+              ar-placement="wall"
               poster=""
               alt="A 3D model of the painting"
               shadow-intensity="1"

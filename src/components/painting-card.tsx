@@ -1,7 +1,7 @@
 "use client";
 
-import { Box, Cuboid, ImageIcon, ShoppingCart } from "lucide-react";
-import dynamic from "next/dynamic";
+import { Box, Cuboid, ShoppingCart } from "lucide-react";
+// import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,14 +14,15 @@ import {
 } from "@/components/ui/card";
 import { frames, type Painting } from "@/data/paintings";
 import { cn } from "@/lib/utils";
+import { ARViewer } from "./ar-viewer";
 import { Painting3DView } from "./painting-3d-view";
 
-const ARViewer = dynamic(
-  () => import("./ar-viewer").then((mod) => mod.ARViewer),
-  {
-    ssr: false,
-  },
-);
+// const ARViewer = dynamic(
+//   () => import("./ar-viewer").then((mod) => mod.ARViewer),
+//   {
+//     ssr: false,
+//   },
+// );
 
 interface PaintingCardProps {
   painting: Painting;
