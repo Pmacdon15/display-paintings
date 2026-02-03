@@ -53,7 +53,7 @@ export function PaintingCard({ painting }: PaintingCardProps) {
       <Card className="overflow-hidden border-border bg-card/50 backdrop-blur-sm text-card-foreground shadow-2xl transition-all hover:shadow-primary/10">
         <div className="relative aspect-square w-full bg-muted/20">
           {viewMode === "2d" ? (
-             <Painting3DView
+            <Painting3DView
               mode="2d"
               paintingUrl={painting.imageUrl}
               frameStyle={selectedFrame.style}
@@ -74,28 +74,28 @@ export function PaintingCard({ painting }: PaintingCardProps) {
           <div className="absolute top-4 right-4 flex flex-col gap-2">
             <Button
               size="icon"
-              variant={viewMode === "2d" ? "default": "secondary" }
+              variant={viewMode === "2d" ? "default" : "secondary"}
               onClick={() => setViewMode("2d")}
               title="2D View"
               className={cn(
                 "rounded-full",
                 viewMode === "2d"
-                  ? "bg-white text-black hover:bg-neutral-200"
-                  : "bg-black/50 text-white hover:bg-black/70",
+                  ? "bg-black text-white hover:bg-black/80"
+                  : "bg-white/90 text-black hover:bg-white",
               )}
             >
               <ImageIcon className="size-4" />
             </Button>
             <Button
               size="icon"
-              variant={viewMode === "3d" ? "secondary": "default" }
+              variant={viewMode === "3d" ? "secondary" : "default"}
               onClick={() => setViewMode("3d")}
               title="3D View"
               className={cn(
                 "rounded-full",
                 viewMode === "3d"
-                  ? "bg-white text-black hover:bg-neutral-200"
-                  : "bg-black/50 text-white hover:bg-black/70",
+                  ? "bg-black text-white hover:bg-black/80"
+                  : "bg-white/90 text-black hover:bg-white",
               )}
             >
               <Box className="size-4" />
@@ -105,7 +105,7 @@ export function PaintingCard({ painting }: PaintingCardProps) {
               variant="secondary"
               onClick={() => setShowAR(true)}
               title="AR View"
-              className="rounded-full bg-black/5 text-black hover:bg-black/10 md:hidden"
+              className="rounded-full bg-white/90 text-black hover:bg-white md:hidden"
             >
               <Cuboid className="size-4" />
             </Button>

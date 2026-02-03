@@ -105,8 +105,8 @@ export function PaintingScene({
   const height = width / aspect;
 
   // Frame parameters
-  const frameThickness = 0.4;
-  const frameDepth = 0.2;
+  const frameThickness = 0.15;
+  const frameDepth = 0.08;
 
   // Base material params
   const frameMaterialParams = useMemo(
