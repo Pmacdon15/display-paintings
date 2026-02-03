@@ -9,11 +9,14 @@ interface Painting3DProps {
   frameStyle: FrameStyle;
   frameTextureUrl?: string;
   frameColor?: string;
+  mode: "2d" | "3d";
 }
 
 import { PaintingScene } from "./painting-scene";
 
 export function Painting3DView(props: Painting3DProps) {
+  const { mode } = props;
+
   return (
     <div className="w-full h-full min-h-100 rounded-lg overflow-hidden relative grayscale-0">
       <Canvas shadows camera={{ position: [0, 0, 8], fov: 50 }}>
@@ -29,15 +32,19 @@ export function Painting3DView(props: Painting3DProps) {
 
         <PaintingScene {...props} />
 
-        <OrbitControls
-          makeDefault
-          minPolarAngle={0}
-          maxPolarAngle={Math.PI / 1.5}
-        />
+        {mode === "3d" && (
+          <OrbitControls
+            makeDefault
+            minPolarAngle={0}
+            maxPolarAngle={Math.PI / 1.5}
+          />
+        )}
       </Canvas>
-      <div className="absolute bottom-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-md pointer-events-none">
-        Drag to Rotate
-      </div>
+      {mode === "3d" && (
+        <div className="absolute bottom-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-md pointer-events-none">
+          Drag to Rotate
+        </div>
+      )}
     </div>
   );
 }

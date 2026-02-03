@@ -1,8 +1,7 @@
 "use client";
 
-import { Box, Cuboid, ShoppingCart } from "lucide-react";
+import { Box, Cuboid, ImageIcon, ShoppingCart } from "lucide-react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +28,7 @@ interface PaintingCardProps {
 }
 
 export function PaintingCard({ painting }: PaintingCardProps) {
-  const [viewMode, setViewMode] = useState<"2d" | "3d">("3d");
+  const [viewMode, setViewMode] = useState<"2d" | "3d">("2d");
   const [selectedFrameId, setSelectedFrameId] = useState<string>("f1");
   const [showAR, setShowAR] = useState(false);
 
@@ -54,29 +53,16 @@ export function PaintingCard({ painting }: PaintingCardProps) {
       <Card className="overflow-hidden border-border bg-card/50 backdrop-blur-sm text-card-foreground shadow-2xl transition-all hover:shadow-primary/10">
         <div className="relative aspect-square w-full bg-muted/20">
           {viewMode === "2d" ? (
-            <div className="w-full h-full flex items-center justify-center p-8">
-              {/* Frame Simulation in 2D */}
-              <div
-                className="relative shadow-2xl transition-all duration-300 w-full h-full max-w-[80%] max-h-[80%] aspect-square flex items-center justify-center bg-white"
-                style={{
-                  border:
-                    selectedFrame.style === "none"
-                      ? "none"
-                      : `16px solid ${selectedFrame.color}`,
-                  boxShadow: "0 20px 50px -12px rgba(0, 0, 0, 0.2)",
-                }}
-              >
-                <Image
-                  src={painting.imageUrl}
-                  alt={painting.title}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              </div>
-            </div>
+             <Painting3DView
+              mode="2d"
+              paintingUrl={painting.imageUrl}
+              frameStyle={selectedFrame.style}
+              frameColor={selectedFrame.color}
+              frameTextureUrl={selectedFrame.textureUrl}
+            />
           ) : (
             <Painting3DView
+              mode="3d"
               paintingUrl={painting.imageUrl}
               frameStyle={selectedFrame.style}
               frameColor={selectedFrame.color}
@@ -86,9 +72,9 @@ export function PaintingCard({ painting }: PaintingCardProps) {
 
           {/* View Toggles */}
           <div className="absolute top-4 right-4 flex flex-col gap-2">
-            {/* <Button
+            <Button
               size="icon"
-              variant={viewMode === "2d" ? "default" : "secondary"}
+              variant={viewMode === "2d" ? "default": "secondary" }
               onClick={() => setViewMode("2d")}
               title="2D View"
               className={cn(
@@ -99,7 +85,7 @@ export function PaintingCard({ painting }: PaintingCardProps) {
               )}
             >
               <ImageIcon className="size-4" />
-            </Button> */}
+            </Button>
             <Button
               size="icon"
               variant={viewMode === "3d" ? "secondary": "default" }

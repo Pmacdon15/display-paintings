@@ -93,14 +93,15 @@ export function PaintingScene({
   frameStyle,
   frameTextureUrl,
   frameColor,
-}: PaintingSceneProps) {
+  width = 3,
+}: PaintingSceneProps & { width?: number }) {
   const paintingTexture = useLoader(TextureLoader, paintingUrl);
 
   // Painting Aspect Ratio
   const aspect = paintingTexture.image
     ? paintingTexture.image.width / paintingTexture.image.height
     : 1;
-  const width = 3;
+  // const width is now from props
   const height = width / aspect;
 
   // Frame parameters

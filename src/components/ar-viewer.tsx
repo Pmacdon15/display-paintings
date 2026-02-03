@@ -111,6 +111,7 @@ export function ARViewer({
                     frameStyle={frameStyle}
                     frameTextureUrl={frameTextureUrl}
                     frameColor={frameColor}
+                    width={0.8}
                   />
                   <Exporter onUrl={setModelUrl} />
                 </Suspense>
@@ -127,7 +128,6 @@ export function ARViewer({
           ) : (
             <ModelViewer
               src={modelUrl}
-              ios-src=""
               poster=""
               alt="A 3D model of the painting"
               shadow-intensity="1"
@@ -135,11 +135,14 @@ export function ARViewer({
               auto-rotate
               interaction-prompt="auto"
               ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-scale="auto"
               className="w-full h-full"
               style={{
                 width: "100%",
                 height: "100%",
                 backgroundColor: "#f5f5f5",
+                touchAction: "pan-y",
               }}
             >
               <div
