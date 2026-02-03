@@ -197,6 +197,9 @@ export function PaintingCard({ painting }: PaintingCardProps) {
       {showAR && (
         <ARViewer
           paintingUrl={painting.imageUrl}
+          frameStyle={selectedFrame.style}
+          frameColor={selectedFrame.color}
+          frameTextureUrl={selectedFrame.textureUrl}
           onClose={() => setShowAR(false)}
         />
       )}

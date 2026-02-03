@@ -1,24 +1,82 @@
 "use client";
 
 import "@google/model-viewer";
-import { X } from "lucide-react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { Loader2, X } from "lucide-react";
+import { Suspense, useEffect, useState } from "react";
+import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
+import type { FrameStyle } from "@/data/paintings";
+import { PaintingScene } from "./painting-scene";
 import { Button } from "./ui/button";
 
 interface ARViewerProps {
-  paintingUrl: string; // Not used for the model yet, but potentially for texture swapping if we had a dynamic GLB backend
+  paintingUrl: string;
+  frameStyle: FrameStyle;
+  frameTextureUrl?: string;
+  frameColor?: string;
   onClose: () => void;
 }
 
-export function ARViewer({ onClose }: ARViewerProps) {
-  // Using a sample GLB from Khronos/Google as a placeholder since we cannot generate dynamic GLBs in the browser easily without a backend service
-  // In a real app, we would use an API to returning a GLB of the specific painting+frame
-  const modelUrl = "https://modelviewer.dev/shared-assets/models/Astronaut.glb"; // Placeholder text
-  // Better placeholder: A picture frame model if available, but Astronaut is the standard "it works" test.
-  // Let's try to find a frame or simple box.
-  // Actually, model-viewer supports 'src' attribute.
+function Exporter({ onUrl }: { onUrl: (url: string) => void }) {
+  const { scene } = useThree();
+  const [exported, setExported] = useState(false);
+
+  useEffect(() => {
+    if (exported) return;
+
+    // Small timeout to ensure everything is mounted/loaded
+    const timer = setTimeout(() => {
+      const exporter = new GLTFExporter();
+      exporter.parse(
+        scene,
+        (gltf) => {
+          const blob = new Blob([gltf as ArrayBuffer], {
+            type: "application/octet-stream",
+          });
+          const url = URL.createObjectURL(blob);
+          onUrl(url);
+          setExported(true);
+        },
+        (error) => {
+          console.error("An error happened during GLTF export", error);
+          setExported(true); // Stop trying
+        },
+        { binary: true },
+      );
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [scene, onUrl, exported]);
+
+  return null;
+}
+
+export function ARViewer({
+  paintingUrl,
+  frameStyle,
+  frameTextureUrl,
+  frameColor,
+  onClose,
+}: ARViewerProps) {
+  const [modelUrl, setModelUrl] = useState<string | null>(null);
+
+  // Clean up object URL on unmount
+  useEffect(() => {
+    return () => {
+      if (modelUrl) URL.revokeObjectURL(modelUrl);
+    };
+  }, [modelUrl]);
 
   // Workaround for TypeScript error with custom element
   const ModelViewer = "model-viewer" as unknown as React.FC<any>;
+
+  // Prevent background scrolling
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
@@ -35,32 +93,63 @@ export function ARViewer({ onClose }: ARViewerProps) {
           </Button>
         </div>
 
-        <div className="flex-1 relative bg-neutral-800">
-          <ModelViewer
-            src={modelUrl}
-            ios-src=""
-            poster=""
-            alt="A 3D model of an astronaut"
-            shadow-intensity="1"
-            camera-controls
-            auto-rotate
-            ar
-            style={{ width: "100%", height: "100%" }}
-          >
-            <div
-              slot="ar-button"
-              className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-3 rounded-full font-bold shadow-lg"
-            >
-              View in your space
+        <div className="flex-1 relative bg-neutral-800 flex items-center justify-center">
+          {/* Hidden Canvas for Generation */}
+          {!modelUrl && (
+            <div className="absolute inset-0 z-0 opacity-0 pointer-events-none">
+              <Canvas>
+                <Suspense fallback={null}>
+                  {/* Provide lighting for the scene otherwise it might be dark, 
+                       though GLTF export usually exports materials not lights unless specified.
+                       We want unlit or standard materials to look right. 
+                       Adding basic ambient light to be safe for texture visibility if baking? 
+                       Actually GLTF export exports the scene graph. 
+                   */}
+                  <ambientLight intensity={1} />
+                  <PaintingScene
+                    paintingUrl={paintingUrl}
+                    frameStyle={frameStyle}
+                    frameTextureUrl={frameTextureUrl}
+                    frameColor={frameColor}
+                  />
+                  <Exporter onUrl={setModelUrl} />
+                </Suspense>
+              </Canvas>
             </div>
-          </ModelViewer>
+          )}
 
-          <div className="absolute top-4 left-4 p-4 bg-black/60 text-white rounded max-w-sm pointer-events-none">
+          {/* Loading State or Viewer */}
+          {!modelUrl ? (
+            <div className="flex flex-col items-center gap-4 text-white">
+              <Loader2 className="animate-spin size-8" />
+              <p>Generating AR Model...</p>
+            </div>
+          ) : (
+            <ModelViewer
+              src={modelUrl}
+              ios-src=""
+              poster=""
+              alt="A 3D model of the painting"
+              shadow-intensity="1"
+              camera-controls
+              auto-rotate
+              ar
+              className="w-full h-full"
+              style={{ width: "100%", height: "100%" }}
+            >
+              <div
+                slot="ar-button"
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-3 rounded-full font-bold shadow-lg"
+              >
+                View in your space
+              </div>
+            </ModelViewer>
+          )}
+
+          <div className="absolute top-4 left-4 p-4 bg-black/60 text-white rounded max-w-sm pointer-events-none z-10">
             <p className="text-sm">
-              <b>Note:</b> Since I cannot generate custom GLB files on the fly
-              without a backend, this AR view demonstrates the capability using
-              a sample model (Astronaut). In a production app, this would show
-              the selected painting.
+              The 3D model is generated in real-time. Click "View in your space"
+              if on a supported mobile device.
             </p>
           </div>
         </div>
