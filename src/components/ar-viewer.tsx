@@ -110,18 +110,15 @@ export function ARViewer({
           alt="A 3D model of the painting"
           shadow-intensity="1"
           camera-controls
-          touchAction="pan-y"
           interaction-prompt="auto"
           ar
           ar-modes="webxr scene-viewer quick-look"
           ar-scale="auto"
           className="w-full h-full"
-          // style={{
-          //   width: "100%",
-          //   height: "100%",
-          //   backgroundColor: "#f5f5f5",
-          //   touchAction: "pan-y",
-          // }}
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
         >
           <div
             slot="ar-button"
@@ -132,6 +129,5 @@ export function ARViewer({
         </ModelViewer>
       )}
     </div>
-  
   );
 }
