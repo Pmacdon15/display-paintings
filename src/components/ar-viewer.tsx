@@ -111,9 +111,11 @@ export function ARViewer({
           alt="A 3D model of the painting"
           shadow-intensity="1"
           camera-controls
+          touch-action="pan-y"
           interaction-prompt="auto"
           ar
           ar-modes="scene-viewer quick-look"
+          ar-placement="wall"
           ar-scale="auto"
           className="w-full h-full"
           style={{
