@@ -115,7 +115,7 @@ export function ARViewer({
           disable-pan
           interaction-prompt="auto"
           ar
-          // ar-modes="scene-viewer quick-look"
+          ar-modes="scene-viewer quick-look"
           // ar-placement="wall"
           // ar-scale="auto"
           className="w-full h-full"
@@ -126,7 +126,7 @@ export function ARViewer({
         >
           <Button
             slot="ar-button"
-            className="absolute top-1 right-1 bg-black text-white py-3 px-1 rounded-full font-bold shadow-lg cursor-pointer hover:scale-105 transition-transform"
+            className="absolute top-4 right-2 bg-foreground/20 text-black py-3 px-1 rounded-full font-bold shadow-lg cursor-pointer hover:scale-105 transition-transform p-2"
           >
             View in your space
           </Button>
