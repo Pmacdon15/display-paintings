@@ -112,11 +112,12 @@ export function ARViewer({
           shadow-intensity="1"
           camera-controls
           touch-action="pan-y"
+          disable-pan
           interaction-prompt="auto"
           ar
-          ar-modes="scene-viewer quick-look"
-          ar-placement="wall"
-          ar-scale="auto"
+          // ar-modes="scene-viewer quick-look"
+          // ar-placement="wall"
+          // ar-scale="auto"
           className="w-full h-full"
           style={{
             width: "100%",
