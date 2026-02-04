@@ -125,7 +125,7 @@ export function ARViewer({
         >
           <div
             slot="ar-button"
-            className="absolute top-1 right-1 bg-black text-white py-3 rounded-full font-bold shadow-lg cursor-pointer hover:scale-105 transition-transform"
+            className="absolute top-1 right-1 bg-black text-white py-3 px-1 rounded-full font-bold shadow-lg cursor-pointer hover:scale-105 transition-transform"
           >
             View in your space
           </div>
