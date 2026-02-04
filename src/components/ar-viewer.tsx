@@ -106,14 +106,14 @@ export function ARViewer({
       ) : (
         <ModelViewer
           src={modelUrl}
-          ar-placement="wall"
+         
           poster=""
           alt="A 3D model of the painting"
           shadow-intensity="1"
           camera-controls
           interaction-prompt="auto"
           ar
-          ar-modes="webxr scene-viewer quick-look"
+          ar-modes="scene-viewer quick-look"
           ar-scale="auto"
           className="w-full h-full"
           style={{
