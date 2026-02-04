@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Cuboid, ImageIcon, ShoppingCart } from "lucide-react";
+import { ShoppingCart, Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/card";
 import { frames, type Painting } from "@/data/paintings";
 import { cn } from "@/lib/utils";
-import { Painting3DView } from "./painting-3d-view";
 
 const ARViewer = dynamic(
   () => import("./ar-viewer").then((mod) => mod.ARViewer),
@@ -28,9 +27,9 @@ interface PaintingCardProps {
 }
 
 export function PaintingCard({ painting }: PaintingCardProps) {
-  const [viewMode, setViewMode] = useState<"2d" | "3d">("3d");
+  // const [viewMode, setViewMode] = useState<"2d" | "3d">("3d");
   const [selectedFrameId, setSelectedFrameId] = useState<string>("f1");
-  const [showAR, setShowAR] = useState(false);
+  // const [showAR, setShowAR] = useState(false);
 
   const selectedFrame =
     frames.find((f) => f.id === selectedFrameId) || frames[0];
@@ -49,69 +48,16 @@ export function PaintingCard({ painting }: PaintingCardProps) {
   };
 
   return (
-    <>
-      <Card className="overflow-hidden border-border bg-card/50 backdrop-blur-sm text-card-foreground shadow-2xl transition-all hover:shadow-primary/10">
+    // <>
+      <Card className="border-border bg-card/50 backdrop-blur-sm text-card-foreground shadow-2xl transition-all hover:shadow-primary/10">
         <div className="relative aspect-square w-full bg-muted/20">
-          {viewMode === "2d" ? (
-            <Painting3DView
-              mode="2d"
-              paintingUrl={painting.imageUrl}
-              frameStyle={selectedFrame.style}
-              frameColor={selectedFrame.color}
-              frameTextureUrl={selectedFrame.textureUrl}
-            />
-          ) : (
-            <Painting3DView
-              mode="3d"
-              paintingUrl={painting.imageUrl}
-              frameStyle={selectedFrame.style}
-              frameColor={selectedFrame.color}
-              frameTextureUrl={selectedFrame.textureUrl}
-            />
-          )}
-
-          {/* View Toggles */}
-          <div className="absolute top-4 right-4 flex flex-col gap-2">
-            {/* <Button
-              size="icon"
-              variant={viewMode === "2d" ? "default" : "secondary"}
-              onClick={() => setViewMode("2d")}
-              title="2D View"
-              className={cn(
-                "rounded-full",
-                viewMode === "2d"
-                  ? "bg-black text-white hover:bg-black/80"
-                  : "bg-white/90 text-black hover:bg-white",
-              )}
-            >
-              <ImageIcon className="size-4" />
-            </Button> */}
-            <Button
-              size="icon"
-              variant={viewMode === "3d" ? "secondary" : "default"}
-              onClick={() => setViewMode("3d")}
-              title="3D View"
-              className={cn(
-                "rounded-full",
-                viewMode === "3d"
-                  ? "bg-black text-white hover:bg-black/80"
-                  : "bg-white/90 text-black hover:bg-white",
-              )}
-            >
-              <Box className="size-4" />
-            </Button>
-            <Button
-              size="icon"
-              variant="secondary"
-              onClick={() => setShowAR(true)}
-              title="AR View"
-              className="rounded-full bg-white/90 text-black hover:bg-white md:hidden"
-            >
-              <Cuboid className="size-4" />
-            </Button>
-          </div>
+          <ARViewer
+            paintingUrl={painting.imageUrl}
+            frameStyle={selectedFrame.style}
+            frameColor={selectedFrame.color}
+            frameTextureUrl={selectedFrame.textureUrl}           
+          />
         </div>
-
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
@@ -129,7 +75,6 @@ export function PaintingCard({ painting }: PaintingCardProps) {
             </div>
           </div>
         </CardHeader>
-
         <CardContent>
           <div className="space-y-4">
             <div className="space-y-2">
@@ -179,16 +124,6 @@ export function PaintingCard({ painting }: PaintingCardProps) {
           </Button>
         </CardFooter>
       </Card>
-
-      {showAR && (
-        <ARViewer
-          paintingUrl={painting.imageUrl}
-          frameStyle={selectedFrame.style}
-          frameColor={selectedFrame.color}
-          frameTextureUrl={selectedFrame.textureUrl}
-          onClose={() => setShowAR(false)}
-        />
-      )}
-    </>
+   
   );
 }

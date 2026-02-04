@@ -18,7 +18,7 @@ export function Painting3DView(props: Painting3DProps) {
   const { mode } = props;
 
   return (
-    <div className="w-full h-full min-h-100 rounded-lg overflow-hidden relative grayscale-0">
+    <div className="w-full h-full rounded-lg overflow-hidden relative grayscale-0">
       <Canvas shadows camera={{ position: [0, 0, 8], fov: 50 }}>
         <ambientLight intensity={0.8} />
         <spotLight
